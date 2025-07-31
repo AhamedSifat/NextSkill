@@ -9,7 +9,7 @@ import arcjet, {
 
 export const aj = arcjet({
   key: process.env.ARCJET_KEY!,
-  characteristics: ['fingerprints'],
+  characteristics: ['userId'],
   rules: [
     shield({
       mode: 'LIVE',

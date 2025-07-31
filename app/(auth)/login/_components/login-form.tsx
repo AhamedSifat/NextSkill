@@ -5,12 +5,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { authClient } from '@/lib/auth-client';
-import { Github, Loader, Mail } from 'lucide-react';
+import { Github, Loader, Loader2, Mail, Send } from 'lucide-react';
 import { toast } from 'sonner';
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 
 export function LoginForm() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [emailPending, starteEmailTransition] = useTransition();
+
+  const [email, setEmail] = useState('');
 
   const handleGithubLogin = async () => {
     startTransition(async () => {
@@ -20,6 +25,24 @@ export function LoginForm() {
         fetchOptions: {
           onSuccess: () => {
             toast.success('Successfully logged in with GitHub!');
+          },
+          onError: () => {
+            toast.error(`Internal server error`);
+          },
+        },
+      });
+    });
+  };
+
+  const signInWithEmail = () => {
+    starteEmailTransition(async () => {
+      await authClient.emailOtp.sendVerificationOtp({
+        email: email,
+        type: 'sign-in',
+        fetchOptions: {
+          onSuccess: () => {
+            toast.success('Email sent');
+            router.push(`/verify-request?email=${email}`);
           },
           onError: () => {
             toast.error(`Internal server error`);
@@ -88,14 +111,31 @@ export function LoginForm() {
               <Input
                 id='email'
                 type='email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder='Enter your email'
                 className='pl-10 h-12 border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-200'
+                required
               />
             </div>
           </div>
 
-          <Button className='w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium transition-all duration-200 hover:scale-[1.02] hover:shadow-lg'>
-            Continue with Email
+          <Button
+            onClick={signInWithEmail}
+            disabled={emailPending}
+            className='w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium transition-all duration-200 hover:scale-[1.02] hover:shadow-lg'
+          >
+            {emailPending ? (
+              <>
+                <Loader2 className='size-4 animate-spin' />
+                <span>Loading...</span>
+              </>
+            ) : (
+              <>
+                <Send className='size-4' />
+                <span> Continue with Email</span>
+              </>
+            )}
           </Button>
         </div>
 

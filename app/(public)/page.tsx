@@ -64,7 +64,7 @@ export default function Home() {
         </div>
       </div>
 
-      <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-12'>
+      <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-12 mb-32'>
         {features.map((feature, index) => (
           <Card key={index} className='hover:shadow-lg transition-shadow'>
             <CardHeader>

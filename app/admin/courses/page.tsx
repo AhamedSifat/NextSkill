@@ -1,17 +1,19 @@
-import { SectionCards } from '@/components/sidebar/section-cards';
-import { ChartAreaInteractive } from '@/components/sidebar/chart-area-interactive';
-import { DataTable } from '@/components/sidebar/data-table';
-import data from '../data.json';
-const page = () => {
+import { buttonVariants } from '@/components/ui/button';
+import Link from 'next/link';
+
+export default function CoursesPage() {
   return (
     <>
-      <SectionCards />
-      <div className='px-4 lg:px-6'>
-        <ChartAreaInteractive />
+      <div className='flex items-center justify-between'>
+        <h1 className='text-2xl font-bold'>Your Courses</h1>
+        <Link className={buttonVariants()} href='/admin/courses/create'>
+          Create Course
+        </Link>
       </div>
-      <DataTable data={data} />
+
+      <div>
+        <h1 className='text-2xl'>Here you will see all of the courses</h1>
+      </div>
     </>
   );
-};
-
-export default page;
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowLeft, SparkleIcon } from 'lucide-react';
+import { ArrowLeft, PlusIcon, SparkleIcon } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import {
   Card,
@@ -24,7 +24,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { courseCategories, courseSchema, CourseSchemaType } from '@/lib/schema';
+import {
+  courseCategories,
+  courseLevels,
+  courseSchema,
+  CourseSchemaType,
+  courseStatus,
+} from '@/lib/schema';
 import slugify from 'slugify';
 import { Textarea } from '@/components/ui/textarea';
 import {
@@ -34,6 +40,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { CourseLevel } from '@/lib/generated/prisma';
 
 export default function CourseCreationPage() {
   const form = useForm<CourseSchemaType>({
@@ -201,7 +208,102 @@ export default function CourseCreationPage() {
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name='level'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>Level</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className='w-full'>
+                            <SelectValue placeholder='Select Value' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {courseLevels.map((category) => (
+                            <SelectItem key={category} value={category}>
+                              {category}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='duration'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>Duration (hours)</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder='Duration'
+                          type='number'
+                          {...field}
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='price'
+                  render={({ field }) => (
+                    <FormItem className='w-full'>
+                      <FormLabel>Price ($)</FormLabel>
+                      <FormControl>
+                        <Input placeholder='Price' type='number' {...field} />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
+
+              <FormField
+                control={form.control}
+                name='status'
+                render={({ field }) => (
+                  <FormItem className='w-full'>
+                    <FormLabel>Status</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className='w-full'>
+                          <SelectValue placeholder='Select Status' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {courseStatus.map((category) => (
+                          <SelectItem key={category} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button>
+                Create Course <PlusIcon className='ml-1' size={16} />
+              </Button>
             </form>
           </Form>
         </CardContent>

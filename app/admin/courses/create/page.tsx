@@ -17,7 +17,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -40,7 +39,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { CourseLevel } from '@/lib/generated/prisma';
+
+
 
 export default function CourseCreationPage() {
   const form = useForm<CourseSchemaType>({

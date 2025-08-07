@@ -40,7 +40,11 @@ export const NavBar = () => {
               <UserDropdown
                 email={data.user.email}
                 image={data.user.image || ''}
-                name={data.user.name}
+                name={
+                  data.user.name && data.user.name.length > 0
+                    ? data.user.name
+                    : data?.user.email.split('@')[0]
+                }
               />
             ) : (
               <>

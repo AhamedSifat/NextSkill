@@ -3,10 +3,16 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import TextAlign from '@tiptap/extension-text-align';
+import { ControllerRenderProps } from 'react-hook-form';
 
 import Menubar from './menubar';
+import { CourseSchemaType } from '@/lib/schema';
 
-const Tiptap = ({ field }: { field: any }) => {
+const Tiptap = ({
+  field,
+}: {
+  field: ControllerRenderProps<CourseSchemaType, 'description'>;
+}) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -25,7 +31,13 @@ const Tiptap = ({ field }: { field: any }) => {
     onUpdate: ({ editor }) => {
       field.onChange(JSON.stringify(editor.getJSON()));
     },
-    content: field.value ? JSON.parse(field.value) : '<p>Hello World</p>',
+    content: field.value ? (function() {
+      try {
+        return JSON.parse(field.value);
+      } catch (e) {
+        return '<p>Hello World</p>';
+      }
+    })() : '<p>Hello World</p>',
     immediatelyRender: false,
   });
 

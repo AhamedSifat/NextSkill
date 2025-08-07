@@ -39,8 +39,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-
+import Tiptap from '@/components/text-editor/editor';
 
 export default function CourseCreationPage() {
   const form = useForm<CourseSchemaType>({
@@ -152,11 +151,7 @@ export default function CourseCreationPage() {
                   <FormItem className='w-full'>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea
-                        className='min-h-[120px]'
-                        placeholder='Description'
-                        {...field}
-                      />
+                      <Tiptap field={field} />
                     </FormControl>
 
                     <FormMessage />

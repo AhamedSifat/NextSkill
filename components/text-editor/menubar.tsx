@@ -31,6 +31,7 @@ const Menubar = ({ editor }: Props) => {
   if (!editor) {
     return null;
   }
+
   return (
     <div className='border border-input border-t-0  border-x-0 rounded-t-lg p-2 bg-card flex flex-wrap gap-1 items-center'>
       <TooltipProvider>
@@ -188,7 +189,7 @@ const Menubar = ({ editor }: Props) => {
                   editor.chain().focus().toggleOrderedList().run()
                 }
                 className={cn(
-                  editor.isActive('bulletList') &&
+                  editor.isActive('orderedList') &&
                     'bg-muted text-muted-foreground'
                 )}
               >

@@ -1,4 +1,4 @@
-import { CloudUploadIcon, ImageOffIcon, XIcon } from 'lucide-react';
+import { CloudUploadIcon, ImageOffIcon, Loader2, XIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
 import Image from 'next/image';
@@ -46,7 +46,15 @@ export function RenderErrorState() {
   );
 }
 
-export function RenderUploadedState({ previewUrl }: { previewUrl: string }) {
+export function RenderUploadedState({
+  previewUrl,
+  isDeleting,
+  removeFile,
+}: {
+  previewUrl: string;
+  isDeleting: boolean;
+  removeFile: () => void;
+}) {
   return (
     <div>
       <Image
@@ -59,8 +67,14 @@ export function RenderUploadedState({ previewUrl }: { previewUrl: string }) {
         variant='destructive'
         size='icon'
         className={cn(['absolute top-4 right-4'])}
+        onClick={removeFile}
+        disabled={isDeleting}
       >
-        <XIcon className='size-4' />
+        {isDeleting ? (
+          <Loader2 className='size-4 animated-spin' />
+        ) : (
+          <XIcon className='size-4' />
+        )}
       </Button>
     </div>
   );

@@ -112,6 +112,53 @@ export const Uploader = () => {
     }
   };
 
+  const removeFile = async () => {
+    try {
+      if (file.isDeleting || !file.key) return;
+      setFile((prevFile) => ({
+        ...prevFile,
+        isDeleting: true,
+      }));
+
+      const response = await fetch('/api/s3/delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: file?.key }),
+      });
+
+      if (!response.ok) {
+        toast.error('Failed to remove file from storage.');
+        setFile((prevFile) => ({
+          ...prevFile,
+          isDeleting: false,
+          error: true,
+        }));
+        return;
+      }
+
+      if (file.objectUrl && !file.objectUrl.startsWith('http')) {
+        URL.revokeObjectURL(file.objectUrl);
+      }
+      setFile({
+        error: false,
+        file: null,
+        id: null,
+        uploading: false,
+        progress: 0,
+        isDeleting: false,
+        fileType: 'image',
+      });
+      toast.success('File removed successfully');
+    } catch {
+      toast.error('Failed to remove file from storage.');
+      setFile((prevFile) => ({
+        ...prevFile,
+        isDeleting: false,
+        error: true,
+      }));
+    }
+  };
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
@@ -165,6 +212,7 @@ export const Uploader = () => {
     multiple: false,
     maxSize: 5 * 1024 * 1024,
     onDropRejected: rejectedFiles,
+    disabled: file.uploading || !!file.objectUrl,
   });
 
   const renderContent = () => {
@@ -181,7 +229,13 @@ export const Uploader = () => {
     }
 
     if (file.objectUrl) {
-      return <RenderUploadedState previewUrl={file.objectUrl} />;
+      return (
+        <RenderUploadedState
+          isDeleting={file.isDeleting}
+          previewUrl={file.objectUrl}
+          removeFile={removeFile}
+        />
+      );
     }
     return <RenderEmptyState isDragActive={isDragActive} />;
   };

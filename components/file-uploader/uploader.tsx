@@ -24,7 +24,12 @@ interface UploadFile {
   fileType: 'image' | 'video';
 }
 
-export const Uploader = () => {
+interface Props {
+  value?: string;
+  onChange?: (value: string) => void;
+}
+
+export const Uploader = ({ value, onChange }: Props) => {
   const [file, setFile] = useState<UploadFile>({
     error: false,
     file: null,
@@ -33,6 +38,7 @@ export const Uploader = () => {
     progress: 0,
     isDeleting: false,
     fileType: 'image',
+    key: value,
   });
 
   const uploadFile = async (file: File) => {
@@ -88,6 +94,8 @@ export const Uploader = () => {
               uploading: false,
             }));
 
+            onChange?.(key);
+
             toast.success('File uploaded successfully');
             resolve();
           } else {
@@ -139,6 +147,9 @@ export const Uploader = () => {
       if (file.objectUrl && !file.objectUrl.startsWith('http')) {
         URL.revokeObjectURL(file.objectUrl);
       }
+
+      onChange?.('');
+
       setFile({
         error: false,
         file: null,

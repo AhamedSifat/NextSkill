@@ -167,7 +167,7 @@ export default function CourseCreationPage() {
                   <FormItem className='w-full'>
                     <FormLabel>Thumbnail Image</FormLabel>
                     <FormControl>
-                      <Uploader />
+                      <Uploader value={field.value} onChange={field.onChange} />
                     </FormControl>
 
                     <FormMessage />

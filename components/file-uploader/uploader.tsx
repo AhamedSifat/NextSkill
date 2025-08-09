@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { Card, CardContent } from '../ui/card';
 import { cn } from '@/lib/utils';
@@ -112,23 +112,30 @@ export const Uploader = () => {
     }
   };
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      const newFile = acceptedFiles[0];
-      setFile({
-        id: crypto.randomUUID(),
-        file: newFile,
-        uploading: false,
-        progress: 0,
-        isDeleting: false,
-        error: false,
-        objectUrl: URL.createObjectURL(newFile),
-        fileType: 'image',
-      });
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        const newFile = acceptedFiles[0];
 
-      uploadFile(newFile);
-    }
-  }, []);
+        if (file.objectUrl && !file.objectUrl.startsWith('http')) {
+          URL.revokeObjectURL(file.objectUrl);
+        }
+        setFile({
+          id: crypto.randomUUID(),
+          file: newFile,
+          uploading: false,
+          progress: 0,
+          isDeleting: false,
+          error: false,
+          objectUrl: URL.createObjectURL(newFile),
+          fileType: 'image',
+        });
+
+        uploadFile(newFile);
+      }
+    },
+    [file.objectUrl]
+  );
 
   const rejectedFiles = (fileRejection: FileRejection[]) => {
     if (fileRejection.length) {
@@ -178,6 +185,14 @@ export const Uploader = () => {
     }
     return <RenderEmptyState isDragActive={isDragActive} />;
   };
+
+  useEffect(() => {
+    return () => {
+      if (file.objectUrl && !file.objectUrl.startsWith('http')) {
+        URL.revokeObjectURL(file.objectUrl);
+      }
+    };
+  }, [file.objectUrl]);
 
   return (
     <Card

@@ -40,6 +40,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import Tiptap from '@/components/text-editor/editor';
+import { Uploader } from '@/components/file-uploader/uploader';
 
 export default function CourseCreationPage() {
   const form = useForm<CourseSchemaType>({
@@ -166,7 +167,7 @@ export default function CourseCreationPage() {
                   <FormItem className='w-full'>
                     <FormLabel>Thumbnail Image</FormLabel>
                     <FormControl>
-                      <Input placeholder='thumbnail url' {...field} />
+                      <Uploader />
                     </FormControl>
 
                     <FormMessage />

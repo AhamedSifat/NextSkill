@@ -4,9 +4,9 @@ import { z } from 'zod';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { S3 } from '@/lib/s3Client'; // Adjust the import path as necessary
 import { aj, detectBot, fixedWindow } from '@/lib/arcjet';
-import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
+
 import { toast } from 'sonner';
+import { requireAdmin } from '@/app/data/admin/require-admin';
 const uploadRequestSchema = z.object({
   filename: z.string(),
   contentType: z.string(),
@@ -29,9 +29,7 @@ export const arcjet = aj
   );
 
 export const POST = async (req: Request) => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await requireAdmin();
 
   try {
     const decision = await arcjet.protect(req, {

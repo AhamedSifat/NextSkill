@@ -1,15 +1,13 @@
 import { NextResponse } from 'next/server';
 import { DeleteObjectCommand } from '@aws-sdk/client-s3';
 import { S3 } from '@/lib/s3Client';
-import { auth } from '@/lib/auth';
-import { headers } from 'next/headers';
+
 import { arcjet } from '../upload/route';
 import { toast } from 'sonner';
+import { requireAdmin } from '@/app/data/admin/require-admin';
 
 export async function DELETE(request: Request) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await requireAdmin();
   try {
     const decision = await arcjet.protect(request, {
       userId: session?.user.id as string,

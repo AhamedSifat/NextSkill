@@ -27,9 +27,11 @@ export const courseSchema = z.object({
 
   fileKey: z.string().min(1, { message: 'File is required' }),
 
-  price: z.number().min(1, { message: 'Price must be a positive number' }),
+  price: z.coerce
+    .number()
+    .min(1, { message: 'Price must be a positive number' }),
 
-  duration: z
+  duration: z.coerce
     .number()
     .min(1, { message: 'Duration must be at least 1 hour' })
     .max(500, { message: 'Duration must be at most 500 hours' }),

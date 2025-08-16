@@ -11,6 +11,7 @@ import {
   RenderUploadingState,
 } from './render-state';
 import { toast } from 'sonner';
+import { getUrlFromKey } from '@/lib/getUrlFromKey';
 
 interface UploadFile {
   id: string | null;
@@ -39,6 +40,7 @@ export const Uploader = ({ value, onChange }: Props) => {
     isDeleting: false,
     fileType: 'image',
     key: value,
+    objectUrl: getUrlFromKey(value || ''),
   });
 
   const uploadFile = async (file: File) => {

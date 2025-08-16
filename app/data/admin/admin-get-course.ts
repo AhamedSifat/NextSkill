@@ -20,6 +20,7 @@ export const adminGetCourse = async (id: string) => {
       fileKey: true,
       slug: true,
       category: true,
+      description: true,
     },
   });
 
@@ -30,4 +31,4 @@ export const adminGetCourse = async (id: string) => {
   return data;
 };
 
-export type CourseType = Awaited<ReturnType<typeof adminGetCourse>>;
+export type AdminSingleCourseType = Awaited<ReturnType<typeof adminGetCourse>>;

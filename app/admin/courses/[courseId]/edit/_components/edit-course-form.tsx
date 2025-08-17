@@ -30,14 +30,13 @@ import {
 import { tryCatch } from '@/lib/try-catch';
 import { Loader2, PlusIcon, SparkleIcon } from 'lucide-react';
 import slugify from 'slugify';
-import { CreateCourse } from '../../../create/actions';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useTransition } from 'react';
-import { useRouter } from 'next/router';
 import { toast } from 'sonner';
 import { editCourse } from '../actions';
 import { AdminSingleCourseType } from '@/app/data/admin/admin-get-course';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   data: AdminSingleCourseType;
@@ -76,7 +75,7 @@ export const EditCourseForm = ({ data }: Props) => {
       if (result?.status === 'success') {
         toast.success(result.message);
         form.reset();
-        router.push('admin/courses');
+        router.push('/admin/courses');
       }
 
       if (result?.status === 'error') {

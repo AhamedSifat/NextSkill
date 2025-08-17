@@ -14,6 +14,8 @@ type Params = Promise<{ courseId: string }>;
 const EditPage = async ({ params }: { params: Params }) => {
   const { courseId } = await params;
   const data = await adminGetCourse(courseId);
+  console.log(data);
+
   return (
     <div>
       <h1 className='text-3xl font-bold mb-8'>

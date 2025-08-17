@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
         port: '',
         protocol: 'https',
       },
+
+      {
+        hostname: 'undefined.t3.storageapi.dev',
+        port: '',
+        protocol: 'https',
+      },
     ],
   },
 };

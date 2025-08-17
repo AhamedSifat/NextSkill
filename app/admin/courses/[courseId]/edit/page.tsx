@@ -41,7 +41,20 @@ const EditPage = async ({ params }: { params: Params }) => {
             </CardContent>
           </Card>
         </TabsContent>
-        <TabsContent value='password'>Change your password here.</TabsContent>
+        <TabsContent value='course-structure'>
+          <Card>
+            <CardHeader>
+              <CardTitle>Course Structure</CardTitle>
+              <CardDescription>
+                Here you can upadte your Course Structure
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent>
+              <EditCourseForm data={data} />
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );
